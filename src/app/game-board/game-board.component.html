@@ -1,0 +1,65 @@
+<div class="board-container">
+  <div class="board-header flex-centre animated zoomInUp">
+    <ng-container *ngIf="!gameOver">
+      <div
+        class="flex-centre animated flip"
+        [style.color]="currentPlayer.symbol === 'x' ? 'blue' : 'green'"
+      >
+        <h1>{{ currentPlayer.symbol | uppercase }}</h1>
+      </div>
+      <div>
+        <h3>{{ currentPlayer.name | titlecase }} it's your turn</h3>
+      </div>
+      <div class="animated flip">
+        <span [style.color]="'blue'">A : {{ scoreA }}</span>
+        <span [style.color]="'green'"> B: {{ scoreB }}</span>
+      </div>
+    </ng-container>
+
+    <div>
+      <h2
+        *ngIf="gameOver && lastWinner == PLAYER_HUMAN_A"
+        [style.color]="'blue'"
+        class="animated heartBeat"
+      >
+        A Win
+      </h2>
+      <h2
+        *ngIf="gameOver && lastWinner == PLAYER_HUMAN_B"
+        [style.color]="'green'"
+        class="animated heartBeat"
+      >
+        B Wins
+      </h2>
+      <h2 *ngIf="gameOver && lastWinner == DRAW" class="animated heartBeat">
+        It's a draw
+      </h2>
+    </div>
+  </div>
+  <div class="board-main flex-centre animated zoomInUp">
+    <div class="board" [class.locked]="boardLocked || gameOver">
+      <div
+        *ngFor="let square of board"
+        [style.color]="square.value === 'x' ? 'blue' : 'green'"
+        class="square "
+        [class.checked]="square.value != ''"
+        [class.winner]="square.winner"
+        (click)="square_click(this.square)"
+      >
+        <div *ngIf="square.value != ''" class="animated bounceInUp">
+          {{ square.value }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="board-button flex-centre">
+    <button
+      id="game-over-button"
+      *ngIf="gameOver"
+      (click)="newGame()"
+      class="animated heartBeat"
+    >
+      Play again
+    </button>
+  </div>
+</div>
